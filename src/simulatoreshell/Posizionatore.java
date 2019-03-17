@@ -5,7 +5,6 @@
  */
 package simulatoreshell;
 
-
 /**
  *
  * @author 70669130
@@ -20,27 +19,30 @@ public class Posizionatore {
         percorso = new Percorso(root.getNome());
     }
 
-    
-    public String getPercorso(){
+    public String getPercorso() {
         return percorso.toString();
     }
 
     public boolean mkdir(String nome) {
-        if(nome == null)
+        if (nome == null) {
             return false;
-        if(nome.equals(""))
+        }
+        if (nome.equals("")) {
             return false;
+        }
         if (attuale.getSottocartella() == null) {
             attuale.setSottocartella(new Folder(nome, attuale));
             return true;
         }
         Folder temp = attuale.getSottocartella();
-        if(temp.getNome().equals(nome))
-                return false;
+        if (temp.getNome().equals(nome)) {
+            return false;
+        }
         while (temp.getFratello() != null) {
             temp = temp.getFratello();
-            if(temp.getNome().equals(nome))
+            if (temp.getNome().equals(nome)) {
                 return false;
+            }
         }
         temp.setFratello(new Folder(nome, attuale));
         return true;
@@ -48,31 +50,32 @@ public class Posizionatore {
 
     public void touch(String nome) {
         if (attuale.getFile() == null) {
-            attuale.setFile(new File(nome,attuale));
+            attuale.setFile(new File(nome, attuale));
             return;
         }
         File temp = attuale.getFile();
         while (temp.getFratello() != null) {
             temp = temp.getFratello();
         }
-        temp.setFratello(new File(nome,attuale));
+        temp.setFratello(new File(nome, attuale));
     }
 
     public void touch(String nome, String type) {
         if (attuale.getFile() == null) {
-            attuale.setFile(new File(nome, type,attuale));
+            attuale.setFile(new File(nome, type, attuale));
             return;
         }
         File temp = attuale.getFile();
         while (temp.getFratello() != null) {
             temp = temp.getFratello();
         }
-        temp.setFratello(new File(nome, type,attuale));
+        temp.setFratello(new File(nome, type, attuale));
     }
 
     private boolean cdPrivate(String nome) {
-        if(nome == null)
+        if (nome == null) {
             return false;
+        }
         if (nome.equals("..")) {
             if (attuale.getPadre() != null) {
                 attuale = attuale.getPadre();
@@ -92,14 +95,21 @@ public class Posizionatore {
         return false;
     }
     
-    public boolean cd(String nome){
+    
+    
+    public boolean cd(String nome) {
         nome = nome.replace("\\", " ");
         String[] t = nome.split(" ");
-        if(t.length == 1)
+        if (t.length == 1) {
             return cdPrivate(nome);
-        for(int i = 0; i < t.length; i++)
-            if(!cdPrivate(t[i]))
+        }
+        for (int i = 0; i < t.length; i++) {
+            if (!cdPrivate(t[i])) {
+                for(int j = i; j > 0; j--)
+                    this.cd("..");
                 return false;
+            }
+        }
         return true;
     }
 
@@ -121,37 +131,41 @@ public class Posizionatore {
         }
         return false;
     }
-    
-    public boolean del(String nome) {
-        if(attuale.getFile() == null)
-            return false;
-        
-        if(nome.contains("*")){
-            
-            String t = nome.substring(1);
-            if(nome.contains("."))
-                t = t.substring(1);
-                
-                System.out.println(t);
-                File f = attuale.getFile();
-                if(f == null)
-                    return false;
-                while (f.getFratello() != null) {
-                    if (f.getFratello().getType().equals(t) || f.getFratello().getNome().contains(t))
-                            f.setFratello(f.getFratello().getFratello());
-                    f = f.getFratello();
-                }
-                if (attuale.getFile().getType().equals(t) || attuale.getFile().getNome().contains(t))
-                    attuale.setFile(attuale.getFile().getFratello());
-                return true;
-            }
-            
-        //rimozione di file
 
+    public boolean del(String nome) {
+        if (attuale.getFile() == null) {
+            return false;
+        }
+
+        if (nome.contains("*")) {
+
+            String t = nome.substring(1);
+            if (nome.contains(".")) {
+                t = t.substring(1);
+            }
+
+            System.out.println(t);
+            File f = attuale.getFile();
+            if (f == null) {
+                return false;
+            }
+            while (f.getFratello() != null) {
+                if (f.getFratello().getType().equals(t) || f.getFratello().getNome().contains(t)) {
+                    f.setFratello(f.getFratello().getFratello());
+                }
+                f = f.getFratello();
+            }
+            if (attuale.getFile().getType().equals(t) || attuale.getFile().getNome().contains(t)) {
+                attuale.setFile(attuale.getFile().getFratello());
+            }
+            return true;
+        }
+
+        //rimozione di file
         String[] s;
         if (nome.contains(".")) {
             s = nome.split("[.]");
-        }else{
+        } else {
             s = new String[2];
             s[0] = nome;
             s[1] = "emp";
@@ -170,27 +184,27 @@ public class Posizionatore {
         }
         return false;
     }
-    
-    public String dir(){
+
+    public String dir() {
         String s = "";
         int file = 0, cartelle = 0;
         Folder temp = attuale.getSottocartella();
-        if(temp != null){
+        if (temp != null) {
             s += "" + temp.toString() + '\n';
             cartelle++;
             temp = temp.getFratello();
-            while(temp != null){
+            while (temp != null) {
                 s += "" + temp.toString() + '\n';
                 temp = temp.getFratello();
                 cartelle++;
             }
         }
         File f = attuale.getFile();
-        if(f != null){
+        if (f != null) {
             s += "" + f.toString() + '\n';
             f = f.getFratello();
             file++;
-            while(f != null){
+            while (f != null) {
                 s += "" + f.toString() + '\n';
                 f = f.getFratello();
                 file++;
@@ -198,11 +212,11 @@ public class Posizionatore {
         }
         return s + "\t\t" + file + " File" + "\n\t\t" + cartelle + " Directory";
     }
-    
-    public boolean ren(String fileName,String fileType, String newName){
+
+    public boolean ren(String fileName, String fileType, String newName) {
         File temp = attuale.getFile();
-        while(temp!= null){
-            if(temp.getNome().equals(fileName) && temp.getType().equals(fileType)){
+        while (temp != null) {
+            if (temp.getNome().equals(fileName) && temp.getType().equals(fileType)) {
                 temp.setNome(newName);
                 return true;
             }
@@ -210,42 +224,46 @@ public class Posizionatore {
         }
         return false;
     }
-    
-    private String treeR (Folder f,int livello){
-        if(f == null)
+
+    private String treeR(Folder f, int livello) {
+        if (f == null) {
             return "";
+        }
         String s = "";
-        if(livello == 0)
+        if (livello == 0) {
             s += f.getNome() + '\n';
-        else{
-        for(int i = livello-1; i > 0; i--){
-            Folder temp = f;
-            for(int j = 0; j < i; j++){
-               temp = temp.getPadre();
+        } else {
+            for (int i = livello - 1; i > 0; i--) {
+                Folder temp = f;
+                for (int j = 0; j < i; j++) {
+                    temp = temp.getPadre();
+                }
+                if (temp.getFratello() == null) {
+                    s += "    ";
+                } else {
+                    s += "│   ";
+                }
             }
-            if(temp.getFratello() == null)
-                s += "    ";
-            else
-                s += "│   ";
+            if (f.getFratello() == null) {
+                s += "└───";
+            } else {
+                s += "├───";
+            }
+
+            s += f.getNome() + "\n";
         }
-        if(f.getFratello() == null){
-            s+= "└───";
-        }   
-        else{
-            s+= "├───";
+        if (f.getSottocartella() != null) {
+            s += treeR(f.getSottocartella(), livello + 1);
         }
-            
-        s +=f.getNome()+ "\n";}
-        if(f.getSottocartella()!= null)
-            s += treeR(f.getSottocartella(),livello + 1);
-        if(f.getFratello() != null && livello != 0)
-            s += treeR(f.getFratello(),livello);
+        if (f.getFratello() != null && livello != 0) {
+            s += treeR(f.getFratello(), livello);
+        }
         return s;
-        
+
     }
-    
-    public String tree(){
-        return treeR(attuale,0);
+
+    public String tree() {
+        return treeR(attuale, 0);
     }
 
     @Override

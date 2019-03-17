@@ -29,7 +29,6 @@ public class Net {
         try {
             carica();
         } catch (IOException ex) {
-            System.err.println("errore");;
         }
         posizionatore = new Posizionatore(root);
     }
@@ -41,10 +40,11 @@ public class Net {
     public String help(){
         String s = "";
         try {
-            Scanner inFile = new Scanner(new FileReader("help.txt"));
+            Scanner inFile = new Scanner(new FileReader("C:\\Users\\gianc\\OneDrive\\java\\project\\simulatoreShell\\help.txt"));
             while(inFile.hasNext())
                 s+= inFile.nextLine() + '\n'; 
         } catch (FileNotFoundException ex) {
+            System.out.println("inpossibile trovare o leggere il file help.txt");
         }
         return s;
     }

@@ -1,9 +1,10 @@
 CD             Visualizza il nome della directory corrente o consentedi passare a un'altra directory.
 CLS            Cancella lo schermo.
-DEL            Elimina uno file.
+DEL            Elimina un file.
+RD			   Rimuovi una directory.
 DIR            Visualizza un elenco di file e sottodirectory in una directory.
 EXIT           Termina il programma simulatoreShell.jar.
 MKDIR          Crea una directory.
-REN            Rinomina uno o più file.
-TREE           Visualizza graficamente la struttura di directory di un'unità opercorso.
+REN            Rinomina un file.
+TREE           Visualizza graficamente la struttura di directory di un'unità o percorso.
 TOUCH          Crea un file.
